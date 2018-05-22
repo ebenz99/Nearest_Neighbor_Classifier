@@ -20,6 +20,7 @@ class pipeDream:
 	def findClosestMatch(self, image):
 		dif = 10000
 		label = "default"
+		bestIdx = 0
 		for x in range(len(self.labs)):
 			im = self.ims[x]
 			lab = self.labs[x]
@@ -27,6 +28,7 @@ class pipeDream:
 			if newDif < dif:
 				dif = newDif
 				label = lab
+				bestIdx = x
 		return label
 
 
@@ -51,7 +53,6 @@ TrainSet = pipeDream(ims1,labs1)
 
 
 ''' TESTING '''
-
 #unpickles test data from batch 2
 test_data = unpickle(currDir + "\\cifar-10-batches-py\\data_batch_2")
 
@@ -67,19 +68,22 @@ labs2 = npLabArr2
 
 numRight = 0
 newLabels = []
+numToCheck = 100
 
-for num in range(0,100):
+for num in range(0,numToCheck):
 	newLab = TrainSet.findClosestMatch(ims2[num])
 	newLabels.append(newLab)
 	if newLab == labs2[num]:
 		numRight += 1
 	if num > 100:
 		break
-	#plt.imshow(ims2[num], interpolation="nearest")
-	#plt.title((meta[b'label_names'])[labs2[num]].decode('utf-8'))
-	#plt.show()
-accuracy = numRight / len(labs2)
+
+
+accuracy = numRight / numToCheck
 print(accuracy)
+
+
+
 
 '''
 #idx = random.randint(0,10000)
